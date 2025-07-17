@@ -1,14 +1,68 @@
-<nav class="navbar navbar-expend-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <div class="navbar-nav">
-            <a class="nav-link active" href="{% url "home:home" %}">Home</a>
-            {% if request.user.is_authenticated %}
-            <a class="nav-link action" href="{% url "account:user_profile" request.user.id %}">Profile</a>
-            <a class="nav-link active" href="{% url "account:user_logout" %}">Logout</a>
-            {% else %}
-            <a class="nav-link active" href="{% url "account:user_register" %}">Register</a>
-            <a class="nav-link active" href="{% url "account:user_login" %}">Login</a>
-            {% endif %}
-        </div>
-    </d>
+<nav class="navbar">
+  <div class="nav-content">
+    <div class="nav-left">
+      <a class="nav-link" href="{% url 'home:home' %}">Home</a>
+
+      {% if request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'account:user_profile' request.user.id %}">Profile</a>
+        <a class="nav-link" href="{% url 'account:user_logout' %}">Logout</a>
+      {% else %}
+        <a class="nav-link" href="{% url 'account:user_register' %}">Register</a>
+        <a class="nav-link" href="{% url 'account:user_login' %}">Login</a>
+      {% endif %}
+    </div>
+
+    <div class="nav-right">
+      {% if request.user.is_authenticated %}
+        {% if request.resolver_match.url_name == 'user_profile' and user and request.user.id == user.id %}
+          <a class="nav-link btn-create" href="{% url 'home:post_create' %}">Create Post</a>
+        {% elif request.resolver_match.url_name == 'post_details' and post %}
+          {% if post.user and request.user.id == post.user.id %}
+            <a class="nav-link btn-create" href="{% url 'home:post_update' post.id %}">Update Post</a>
+            <a class="nav-link btn-create" href="{% url 'home:post_delete' post.id %}">Delete Post</a>
+          {% elif user.is_following %}
+            <a class="nav-link btn-create" href="{% url 'account:user_unfollow' post.user.id %}">Unfollow</a>
+            <a class="nav-link btn-create" href="{% url 'home:post_comment' post.id %}">Comment</a>
+          {% else %}
+            <a class="nav-link btn-create" href="{% url 'account:user_follow' post.user.id %}">Follow</a>
+            <a class="nav-link btn-create" href="{% url 'home:post_comment' post.id %}">Comment</a>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
 </nav>
+
+<style>
+  .navbar {
+    background-color: #0d0d0d;
+    padding: 10px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    background-color: #292929;
+  }
+</style>

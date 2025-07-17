@@ -1,23 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+  h2.text-center {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 2rem;
+    color: #444;
+    margin: 30px 0 10px;
+  }
 
-    <h2 class="text-center"> {{user.username}} </h2>
+  .btn-primary {
+    background-color: #e63946;
+    border: none;
+    padding: 10px 20px;
+    margin: 8px 5px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
 
-    {% if request.user.id == user.id %}
-        <a href="{% url "home:post_create" %}" class="btn btn-primary">Create</a>
-    {% endif %}
+  .btn-primary:hover {
+    background-color: #d62828;
+  }
 
-    {% if request.user.id != user.id and not is_following %}
-    <a class="btn btn-primary" href="{% url "account:user_follow" user.id %}">Follow</a>
-    {% elif request.user.id != user.id and is_following %}
-    <a class="btn btn-primary" href="{% url "account:user_unfollow" user.id %}">Unfollow</a>
-    {% endif %}
+  .card {
+    border-radius: 8px;
+    margin-top: 20px;
+    background: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .card-body {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #222;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .card-body:hover {
+    background-color: #fff;
+  }
+
+  .card-body:last-child {
+    border-bottom: none;
+  }
+</style>
+
+<h2 class="text-center">{{ user.username }}</h2>
 
 <div class="card">
-    {% for post in posts %}
-        <a href="{{ post.get_absolute_url }}" class="card-body">{{ post.body|truncatewords:8 }}</a>
-    {% endfor %}
+  {% for post in posts %}
+    <a href="{{ post.get_absolute_url }}" class="card-body">{{ post.body|truncatewords:8 }}</a>
+  {% empty %}
+    <p class="card-body">No posts yet.</p>
+  {% endfor %}
 </div>
-
 {% endblock content %}

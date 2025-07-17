@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update">
-    </form> 
-{% endblock content %}
+  <div class="custom-form">
+    <h2>Edit Your Post</h2>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <label for="id_body">Post Content:</label>
+      {{ form.body }}
+
+      <button type="submit">Update Post</button>
+    </form>
+  </div>
+{% endblock %}
+
+
+  <div class="custom-form">
+    <h2>Edit Your Post</h2>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <label for="id_body">Post Content:</label>
+      {{ form.body }}
+
+      <button type="submit">Update Post</button>
+    </form>
+  </div>

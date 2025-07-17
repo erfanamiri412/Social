@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if request.user.id == post.user.id %}
-        <a href="{% url "home:post_delete" post.id %}" class="btn btn-danger">Delete</a>
-        <a href="{% url "home:post_update" post.id %}" class="btn btn-info">Update</a>
-    {% endif %}
-    <p><a href="{% url "account:user_profile" post.user.id %}">{{ post.user.username }}</a>{{ post.updated|date:"Y-M-D"}}</p>
-    <p>{{ post.body }}</p><hr/>
+  <div class="container mt-5">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+  </div>
+{% endblock %}
 
-    {% if request.user.is_authenticated %}
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Send">
-        </form>
+{% block navbar_actions %}
+  <div class="ms-auto d-flex gap-2">
+    {% if request.user == post.author %}
+      <a href="{% url 'post_update' post.id %}" class="btn btn-outline-success">Update</a>
+      <a href="{% url 'post_delete' post.id %}" class="btn btn-outline-danger">Delete</a>
     {% else %}
-        <p class="alert alert-danger">Only logged in users can comment</p>
+      {% if user_is_following_author %}
+        <form method="post" action="{% url 'user_unfollow' post.author.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-warning">Unfollow</button>
+        </form>
+      {% else %}
+        <form method="post" action="{% url 'user_follow' post.author.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-primary">Follow</button>
+        </form>
+      {% endif %}
     {% endif %}
-
-    {% for comment in comments %}
-        <div class="card bg-dark text-white">
-            <p class="card-header">{{ comment.user }} | {{ comment.created|timesince }}</p>
-            <p class="card-body">{{ comment.body }}</p>
-        </div>
-    {% empty %}
-        <p>No comments yet!</p>
-    {% endfor %}
-
-{% endblock content %}
+  </div>
+{% endblock %}

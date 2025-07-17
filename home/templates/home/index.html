@@ -1,9 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="card">
-        {% for post in posts %}
-            <a href="{{ post.get_absolute_url }}" class="card-body">{{ post.body|truncatewords:8 }}</a>
-        {% endfor %}
-    </div>
+<style>
+  .card {
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 30px;
+    padding: 15px;
+  }
+
+  .card-body {
+    display: block;
+    background-color: #ffffff;
+    margin: 8px 0;
+    padding: 15px;
+    font-size: 16px;
+    color: #333;
+    border-left: 4px solid #e63946;
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .card-body:hover {
+    background-color: #f1f1f1;
+    border-left-color: #d62828;
+  }
+</style>
+
+<div class="card">
+  {% for post in posts %}
+    <a href="{{ post.get_absolute_url }}" class="card-body">
+      {{ post.body|truncatewords:8 }}
+    </a>
+  {% empty %}
+    <p class="card-body">No posts yet.</p>
+  {% endfor %}
+</div>
 {% endblock content %}

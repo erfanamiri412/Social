@@ -47,7 +47,7 @@ class UserLoginView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        form = self.form_class
+        form = self.form_class()
         return render(request, self.template_name, {'form':form})
 
     def post(self, request):
@@ -61,7 +61,7 @@ class UserLoginView(View):
                 if self.next:
                     return redirect(self.next)
                 return redirect('home:home')
-            messages.error(request, 'Usename or passwod is wrong', 'warning')
+            messages.error(request, 'Username or passwod is wrong', 'warning')
         return render(request, self.template_name, {'form':form})
     
 class UserLogoutView(LoginRequiredMixin, View):
@@ -72,12 +72,15 @@ class UserLogoutView(LoginRequiredMixin, View):
     
 class UserProfileView(LoginRequiredMixin, View):
     def get(self, request, user_id):
-        user = User.objects.get(id = user_id)
+        user = User.objects.get(id=user_id)
         posts = user.posts.all()
-        relation = Relation.objects.filter(from_user = request.user, to_user = user)
-        if relation.exists():
-            is_following = True
-        return render(request, 'account/profile.html', {'user':user, 'posts':posts})
+        relation = Relation.objects.filter(from_user=request.user, to_user=user)
+        is_following = relation.exists()
+        return render(request, 'account/profile.html', {
+            'user': user,
+            'posts': posts,
+            'is_following': is_following
+        })
     
 class UserPasswordResetView(auth_views.PasswordResetView):
     template_name = 'account/password_reset_form.html'
@@ -88,7 +91,7 @@ class UserPasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
 
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    template_name = 'account/passwor_reset_confirm.html'
+    template_name = 'account/password_reset_confirm.html'
     success_url = reverse_lazy('account:password_reset_complete')
 
 class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
@@ -96,22 +99,22 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
 
 class UserFollowView(LoginRequiredMixin, View):
     def get(self, request, user_id):
-        user = user.objects.get(id = user_id)
+        user = User.objects.get(id = user_id)
         relation = Relation.objects.filter(from_user = request.user , to_user = user)
         if relation.exists():
             messages.error(request, 'You are following this user', 'danger')
         else:
-            relation(request, from_user = request.user , to_user = user).save()
+            Relation(from_user=request.user, to_user=user).save()
             messages.success(request, 'You followed this user', 'success')
         return redirect('account:user_profile', user.id)
 
 class UserUnFollowView(LoginRequiredMixin, View):
     def get(self, request, user_id):
-        user = user.objects.get(id = user_id)
+        user = User.objects.get(id = user_id)
         relation = Relation.objects.filter(from_user = request.user , to_user = user)
         if relation.exists():
             relation.delete()
-            messages.success(request, 'You unfollowing this user', 'success')
+            messages.success(request, 'You unfollowed this user', 'success')
         else:
             messages.error(request, 'You are not following this user', 'danger')
         return redirect('account:user_profile', user.id)

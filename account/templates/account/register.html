@@ -1,11 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h3>Register user</h3>
+  <form class="custom-form" method="post" action="" novalidate>
+    {% csrf_token %}
+    <h2>User Registration</h2>
 
-    <form action="" method="post", class="col-ml-6" novalidate>
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Register">
-    </form>
-{% endblock content %}
+    {{ form.as_p }}
+
+    <button type="submit">Register</button>
+  </form>
+
+  <style>
+    .custom-form {
+      max-width: 420px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    .custom-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .custom-form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    .custom-form input,
+    .custom-form textarea,
+    .custom-form select {
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
+      box-sizing: border-box;
+    }
+
+    .custom-form button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 24px;
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .custom-form button:hover {
+      background-color: #0088cc;
+    }
+  </style>
+{% endblock %}
