@@ -1,30 +1,68 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <style>
+    .custom-form {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #f9f9fc;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: sans-serif;
+    }
+
+    .custom-form h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .custom-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .custom-form textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    .custom-form button {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
   <div class="custom-form">
     <h2>Edit Your Post</h2>
 
     <form method="post" novalidate>
       {% csrf_token %}
-
       <label for="id_body">Post Content:</label>
       {{ form.body }}
-
       <button type="submit">Update Post</button>
     </form>
   </div>
 {% endblock %}
-
-
-  <div class="custom-form">
-    <h2>Edit Your Post</h2>
-
-    <form method="post" novalidate>
-      {% csrf_token %}
-
-      <label for="id_body">Post Content:</label>
-      {{ form.body }}
-
-      <button type="submit">Update Post</button>
-    </form>
-  </div>

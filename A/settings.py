@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#!1+kg-458#q=a6lpzvte($&zt@7t(i)i&ya12yeq)w$+re-rz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -130,9 +130,10 @@ AUTHENTICATION_BACKENDS=[
     'account.authenticate.EmailBackend',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackemd'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'amirierfan412@gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'pxjuuywzvlmfzlvm'
-DEFAULT_FROM_EMAIL = 'Hello!'
+EMAIL_USE_TLS = True 
+EMAIL_HOST_USER = 'amirierfan11228@gmail.com'
+EMAIL_HOST_PASSWORD = 'xndnjjubobjjnvgj'
+DEFAULT_FROM_EMAIL = 'ُStack Over Flow'

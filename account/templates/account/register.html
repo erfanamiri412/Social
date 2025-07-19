@@ -7,7 +7,7 @@
 
     {{ form.as_p }}
 
-    <button type="submit">Register</button>
+    <button type="submit" class="full-width-btn">Register</button>
   </form>
 
   <style>
@@ -35,30 +35,33 @@
 
     .custom-form input,
     .custom-form textarea,
-    .custom-form select {
+    .custom-form select,
+    .custom-form .full-width-btn {
       display: block;
       width: 100%;
       padding: 10px 14px;
       margin-bottom: 15px;
       border: none;
       border-radius: 5px;
-      background-color: rgba(255,255,255,0.1);
-      color: #fff;
       box-sizing: border-box;
     }
 
-    .custom-form button {
-      display: block;
-      margin: 0 auto;
-      padding: 10px 24px;
-      background-color: #00aaff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .custom-form input,
+    .custom-form textarea,
+    .custom-form select {
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
     }
 
-    .custom-form button:hover {
+    .custom-form button.full-width-btn {
+      background-color: #00aaff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-form button.full-width-btn:hover {
       background-color: #0088cc;
     }
   </style>

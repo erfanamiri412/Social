@@ -78,18 +78,31 @@ class PostCreatedView(LoginRequiredMixin, View):
             messages.success(request, 'You created a new post', 'success')
             return redirect('home:post_details', new_post.id, new_post.slug)
         
-class PostCommentView(LoginRequiredMixin, View):
-    def add_comment(request, post_id):
-        post = get_object_or_404(Post, id=post_id)
+class PostCommentView(View):
+    form_class = CommentCreateForm
 
-        if request.method == 'POST':
-            body = request.POST.get('body', '').strip()
-            if body:
-                Comment.objects.create(
-                    user=request.user,
-                    post=post,
-                    body=body
-                )
-            return redirect('home:post_details', post_id=post.id)
+    def get(self, request, post_id, post_slug):
+        post = get_object_or_404(Post, pk=post_id, slug=post_slug)
+        form = self.form_class()
+        comments = post.pcomments.filter(is_replay=False)
+        return render(request, 'home/detail.html', {
+            'post': post,
+            'form': form,
+            'comments': comments,
+        })
 
-        return redirect('home:post_details', post_id=post.id)
+    def post(self, request, post_id, post_slug):
+        post = get_object_or_404(Post, pk=post_id, slug=post_slug)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            return redirect('home:post_details', post_id=post.id, post_slug=post.slug)
+        comments = post.pcomments.filter(is_replay=False)
+        return render(request, 'home/detail.html', {
+            'post': post,
+            'form': form,
+            'comments': comments,
+        })

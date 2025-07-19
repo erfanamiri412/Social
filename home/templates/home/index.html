@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
 <style>
-  .card {
+  .post-card {
     border-radius: 10px;
     background-color: #f8f9fa;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -10,31 +9,42 @@
     padding: 15px;
   }
 
-  .card-body {
+  .post-link {
     display: block;
     background-color: #ffffff;
-    margin: 8px 0;
-    padding: 15px;
-    font-size: 16px;
-    color: #333;
+    margin: 12px 0;
+    padding: 16px;
+    font-size: 15px;
+    color: #343a40;
     border-left: 4px solid #e63946;
+    border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
-  .card-body:hover {
+  .post-link:hover {
     background-color: #f1f1f1;
     border-left-color: #d62828;
   }
+
+  .empty-message {
+    font-style: italic;
+    color: #999;
+    padding: 16px;
+    background: #fff;
+    border-radius: 6px;
+    border-left: 4px solid #ccc;
+    margin-top: 20px;
+  }
 </style>
 
-<div class="card">
+<div class="post-card">
   {% for post in posts %}
-    <a href="{{ post.get_absolute_url }}" class="card-body">
-      {{ post.body|truncatewords:8 }}
+    <a href="{{ post.get_absolute_url }}" class="post-link">
+      {{ post.body|truncatewords:8 }}...
     </a>
   {% empty %}
-    <p class="card-body">No posts yet.</p>
+    <div class="empty-message">No posts yet.</div>
   {% endfor %}
 </div>
-{% endblock content %}
+{% endblock %}

@@ -1,10 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <style>
+    .create-form {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #f9f9fc;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: sans-serif;
+    }
 
-<form action="" method="post" novalidate>
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Create">
-</form>
+    .create-form h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .create-form input[type="text"],
+    .create-form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .create-form input[type="submit"] {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .create-form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+  <div class="create-form">
+    <h2>Create New Post</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Create">
+    </form>
+  </div>
 {% endblock content %}

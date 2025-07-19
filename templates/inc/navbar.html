@@ -22,10 +22,8 @@
             <a class="nav-link btn-create" href="{% url 'home:post_delete' post.id %}">Delete Post</a>
           {% elif user.is_following %}
             <a class="nav-link btn-create" href="{% url 'account:user_unfollow' post.user.id %}">Unfollow</a>
-            <a class="nav-link btn-create" href="{% url 'home:post_comment' post.id %}">Comment</a>
           {% else %}
             <a class="nav-link btn-create" href="{% url 'account:user_follow' post.user.id %}">Follow</a>
-            <a class="nav-link btn-create" href="{% url 'home:post_comment' post.id %}">Comment</a>
           {% endif %}
         {% endif %}
       {% endif %}

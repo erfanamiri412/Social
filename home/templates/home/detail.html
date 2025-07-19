@@ -1,29 +1,113 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container mt-5">
+<style>
+  .container {
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  .post-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .post-box h2 {
+    font-size: 2rem;
+    color: #343a40;
+  }
+
+  .comment-box {
+    background: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+  }
+
+  .comment-box strong {
+    color: #0d6efd;
+  }
+
+  .comment-box small {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+
+  .comment-form textarea,
+  .comment-form .btn-submit {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .comment-form textarea {
+    resize: none;
+    min-height: 120px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #212529;
+  }
+
+  .comment-form .btn-submit {
+    border: none;
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .comment-form .btn-submit:hover {
+    background-color: #0b5ed7;
+  }
+
+  .alert-warning {
+    font-weight: 500;
+    padding: 10px;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="post-box">
     <h2>{{ post.title }}</h2>
     <p>{{ post.body }}</p>
   </div>
-{% endblock %}
 
-{% block navbar_actions %}
-  <div class="ms-auto d-flex gap-2">
-    {% if request.user == post.author %}
-      <a href="{% url 'post_update' post.id %}" class="btn btn-outline-success">Update</a>
-      <a href="{% url 'post_delete' post.id %}" class="btn btn-outline-danger">Delete</a>
-    {% else %}
-      {% if user_is_following_author %}
-        <form method="post" action="{% url 'user_unfollow' post.author.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-outline-warning">Unfollow</button>
-        </form>
-      {% else %}
-        <form method="post" action="{% url 'user_follow' post.author.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-outline-primary">Follow</button>
-        </form>
-      {% endif %}
-    {% endif %}
+  <hr class="my-5">
+
+  <h4>Comments</h4>
+  <div class="mb-4">
+    {% for comment in comments %}
+      <div class="comment-box">
+        <strong>{{ comment.user.username }}</strong> |
+        <small>{{ comment.created|date:"Y/m/d H:i" }}</small>
+        <p class="mt-2">{{ comment.body }}</p>
+      </div>
+    {% empty %}
+      <p class="text-muted">No comments yet.</p>
+    {% endfor %}
   </div>
+
+  {% if request.user.is_authenticated %}
+    <div class="comment-form">
+      <h5 class="mt-4 text-primary fw-bold">Send a comment</h5>
+      <form method="post" action="{% url 'home:post_comment' post.id post.slug %}">
+        {% csrf_token %}
+        {{ form.body }}
+        <button type="submit" class="btn-submit">Send</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="text-warning">You have to sign in first.</p>
+  {% endif %}
+</div>
 {% endblock %}

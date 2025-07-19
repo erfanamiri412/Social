@@ -7,7 +7,11 @@
 
     {{ form.as_p }}
 
-    <button type="submit">Sign In</button>
+    <button type="submit" class="full-width-btn">Sign In</button>
+
+    <div class="forgot-password">
+      <a href="{% url 'account:reset_password' %}">🔐 Forget password?</a>
+    </div>
   </form>
 
   <style>
@@ -34,31 +38,50 @@
     }
 
     .custom-form input,
-    .custom-form textarea {
+    .custom-form textarea,
+    .custom-form .full-width-btn {
       display: block;
       width: 100%;
       padding: 10px 14px;
       margin-bottom: 15px;
       border: none;
       border-radius: 5px;
-      background-color: rgba(255,255,255,0.1);
-      color: #fff;
       box-sizing: border-box;
     }
 
-    .custom-form button {
-      display: block;
-      margin: 0 auto;
-      padding: 10px 24px;
-      background-color: #00aaff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .custom-form input,
+    .custom-form textarea {
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
     }
 
-    .custom-form button:hover {
+    .custom-form button.full-width-btn {
+      background-color: #00aaff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .custom-form button.full-width-btn:hover {
       background-color: #0088cc;
+    }
+
+    .custom-form .forgot-password {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .custom-form .forgot-password a {
+      color: #00ffff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .custom-form .forgot-password a:hover {
+      color: #ffffff;
+      text-decoration: underline;
     }
   </style>
 {% endblock %}
